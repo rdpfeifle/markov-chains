@@ -46,6 +46,7 @@ def make_chains(text_string):
 
     words = text_string.split()
 
+    words.append(None)
     # iterate through the words as pairs by index
     # chains[] = 
     for i in range(len(words) - 2):
@@ -78,26 +79,41 @@ def make_text(chains):
     # use list() ti convert the keys into a list
     # then use the chains.keys()
 
-    new_keys = choice(list(chains.keys()))
+    new_key = choice(list(chains.keys()))
 
     # add each word to a list and join the list into a string at the end
-    words = [new_keys[0], new_keys[1]]
+    words = [new_key[0], new_key[1]]
 
-    print(words)
+    # random word we pulled out from the list 'words'
+    random_word = choice(chains[new_key])
 
+    # look up that new key in the dictionary, and pull a new random word out of the resulting list until the program raises a KeyError
+    # maybe we could use a loop
+    #got really stuck here, had to glance at solution for guidance:
+    while random_word is not None:
+        new_key = (new_key[1], random_word)
+        words.append(random_word)
+        random_word = choice(chains[new_key])
+    
+    # print(words)
+    # print(random_word)
+
+    # return a string of the words we've pulled out
     return ' '.join(words)
 
     
 
-input_path = 'green-eggs.txt'
+# input_path = 'green-eggs.txt'
+input_path = 'jokes.txt'
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
 chains = make_chains(input_text)
+# print(chains)
 
 # Produce random text
 random_text = make_text(chains)
-
+print(random_text)
 # print(random_text)
